@@ -1,0 +1,15 @@
+﻿@model TaskManager.Models.Workspaces
+
+@{
+    ViewData["Title"] = "Your new workspace";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Create a new workspace</h1>
+</div>
+
+<form asp-action="CreateWorkspace" asp-controller="Workspace">
+    <label>Name</label>
+    <input class="form-control" type="text" placeholder="ExampleWorkspace" asp-for="Name" />
+    <button class="btn btn-primary mt-4" type="submit">Create workspace</button>
+</form>

@@ -1,0 +1,30 @@
+﻿@model IEnumerable<TaskManager.Models.Workspaces>
+
+@{
+    ViewData["Title"] = "My Workspaces";
+}
+
+<h2>My Workspaces</h2>
+
+@if (Model == null || !Model.Any())
+{
+    <p>No workspaces available.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Workspace Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var workspace in Model)
+            {
+                <tr>
+                    <td>@workspace.Name</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

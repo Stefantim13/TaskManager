@@ -1,0 +1,36 @@
+﻿@model IEnumerable<TaskManager.Models.Tasks>
+
+@{
+    ViewData["Title"] = "My Tasks";
+}
+
+<h2>My Tasks</h2>
+
+@if (Model == null || !Model.Any())
+{
+    <p>No tasks available.</p>
+}
+else
+{
+    if (ViewBag.WorkspaceName)
+    {
+        <div class="align-content-center">
+            <h1>Current workspace: @ViewBag.WorkspaceName</h1>
+        </div>
+    }
+    <table class="table">
+        <thead>
+            <tr>
+                <th>All tasks</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var task in Model)
+            {
+                <tr>
+                    <td>@task.Description</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
