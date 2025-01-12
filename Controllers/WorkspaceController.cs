@@ -8,6 +8,7 @@ using TaskManager.Models;
 
 namespace TaskManager.Controllers
 {
+    [Authorize]
     public class WorkspaceController : Controller
     {
         private readonly ApplicationDbContext db;
@@ -26,7 +27,7 @@ namespace TaskManager.Controllers
         public async Task<IActionResult> MyWorkspaces(int? id)
         {
             List<Workspaces> workspaces = new List<Workspaces>();
-            ///var user = await userManager.GetUserAsync(User);
+            var user = await userManager.GetUserAsync(User);
             ///if (user == null)
             /// return Unauthorized();
 
@@ -38,6 +39,7 @@ namespace TaskManager.Controllers
             {
                 workspaces = await db.Workspaces
                     .Include(w => w.Tasks)
+                    .Where(w => w.Workings.UserId == user.Id)
                     .ToListAsync();
             }
             else

@@ -21,7 +21,9 @@ namespace TaskManager.Models
                 var roles = new List<IdentityRole>
                 {
                     new IdentityRole { Name = "Administrator", NormalizedName = "ADMINISTRATOR" },
-                    new IdentityRole { Name = "Organizator", NormalizedName = "ORGANIZATOR" },
+                    new IdentityRole { Name = "User", NormalizedName= "USER" },
+                    // new IdentityRole { Name = "Organizator", NormalizedName = "ORGANIZATOR" },
+                    // new IdentityRole { Name = "Membru", NormalizedName = "MEMBRU" },
                 };
                 
                 foreach (IdentityRole role in roles)
@@ -34,6 +36,7 @@ namespace TaskManager.Models
 
                     if (result.Succeeded)
                     {
+                        continue;
                         var username = role.Name.ToLower().Trim();
                         var email = $"{username}@test.com";
                         var newUser = new ApplicationUser

@@ -113,6 +113,23 @@ namespace TaskManager.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
+                /* var admin = await _userManager.FindByEmailAsync("admin@admin.com");
+                if(admin != null)
+                {
+                    await _userManager.DeleteAsync(admin);
+                }
+                else
+                {
+                    var _user = CreateUser();
+                    await _userStore.SetUserNameAsync(_user, "admin@admin.com", CancellationToken.None);
+                    await _emailStore.SetEmailAsync(_user, "admin@admin.com", CancellationToken.None);
+                    var _result = await _userManager.CreateAsync(_user, "Administrator.12");
+
+                    if (_result.Succeeded)
+                    {
+                        await _userManager.AddToRoleAsync(_user, "Administrator");
+                    }
+                }*/
                 var user = CreateUser();
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
@@ -121,7 +138,11 @@ namespace TaskManager.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
+                    await _userManager.AddToRoleAsync(user, "User");
                     _logger.LogInformation("User created a new account with password.");
+
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    return LocalRedirect(returnUrl);
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

@@ -11,8 +11,5 @@ namespace TaskManager.Models
 
         public virtual ICollection<Tasks> Tasks { get; set; } = new List<Tasks>();
         public virtual ICollection<Working> Workings { get; set; } = new List<Working>();
-
-
-
     }
 }
