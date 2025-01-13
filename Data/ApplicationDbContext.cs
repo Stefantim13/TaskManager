@@ -41,7 +41,8 @@ namespace TaskManager.Data
             builder.Entity<Working>()
                 .HasOne<ApplicationUser>()
                 .WithMany(u => u.Workings)
-                .HasForeignKey(w => w.UserId);
+                .HasForeignKey(w => w.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<Working>()
                 .HasOne(w => w.Workspace)
@@ -59,7 +60,8 @@ namespace TaskManager.Data
             builder.Entity<AssignedTo>()
                 .HasOne(at => at.User)
                 .WithMany(u => u.AssignedTasks)
-                .HasForeignKey(at => at.userID);
+                .HasForeignKey(at => at.userID)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<AssignedTo>()
                 .HasOne(at => at.Tasks)
@@ -74,7 +76,8 @@ namespace TaskManager.Data
             builder.Entity<Comment>()
                 .HasOne(c => c.User)
                 .WithMany(t => t.Comments)
-                .HasForeignKey(c => c.UserId);
+                .HasForeignKey(c => c.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<Comment>(entity =>
             {

@@ -150,6 +150,14 @@ namespace TaskManager.Controllers
                 return Forbid();
             }
 
+            var existingMember = await db.Workings
+                .FirstOrDefaultAsync(w => w.WorkspaceID == workspaceID && w.UserId == user.Id);
+
+            if (existingMember != null)
+            {
+                return RedirectToAction("ShowWorkspace", "Workspace", new { id = workspaceID });
+            }
+
             var working = new Working
             {
                 UserId = await userManager.GetUserIdAsync(user),

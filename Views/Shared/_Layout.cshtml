@@ -30,8 +30,11 @@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Workspace" asp-action="MyWorkspaces">Workspaces</a>
                             </li>
+                        }
+                        @if (User.IsInRole("Administrator"))
+                        {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Tasks" asp-action="MyTasks">Tasks</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="AdminPanel">Go to Admin Panel</a>
                             </li>
                         }
                     </ul>

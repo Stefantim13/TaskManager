@@ -53,6 +53,14 @@ namespace TaskManager.Controllers
                 return Forbid();
             }
 
+            ViewBag.userID = user.Id;
+
+            var admin = await userManager.IsInRoleAsync(user, "Administrator");
+            if (admin)
+            {
+                ViewBag.isAdmin = true;
+            }
+
             var task = await db.Tasks
                 .Include(t => t.Comments)
                     .ThenInclude(c => c.User)
