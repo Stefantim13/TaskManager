@@ -8,13 +8,14 @@
     <h1 class="display-4">Create a new task</h1>
 </div>
 
-<form asp-action="CreateTask" asp-controller="Tasks">
-    <input hidden class="form-control" type="date" placeholder="" asp-for="DueDate" />
-    <input hidden class="form-control" type="number" placeholder="" value="0" asp-for="StatusID" />
+<form asp-action="CreateTask" asp-controller="Tasks" method="post">
+    <input hidden class="form-control" type="number" placeholder="" value="1" asp-for="StatusID" />
     <input hidden class="form-control" type="number" placeholder="" value="@ViewBag.WorkspaceID" asp-for="WorkspaceID" />
     <label>Title</label>
     <input class="form-control" type="text" placeholder="ExampleTask" asp-for="Title" />
     <label>Description</label>
     <input class="form-control" type="text" placeholder="ExampleTaskDescription" asp-for="Description" />
+    <label for="DueDate">Due Date</label>
+    <input class="form-control" type="date" id="DueDate" asp-for="DueDate" />
     <button class="btn btn-primary mt-4" type="submit">Create Task</button>
 </form>

@@ -1,0 +1,16 @@
+﻿@model TaskManager.Models.Tasks
+
+@{
+    ViewData["Title"] = "Add a new member";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Add a new member</h1>
+</div>
+
+<form asp-action="AddMember" asp-controller="Workspace" method="post">
+    <input hidden class="form-control" type="number" placeholder="" name="WorkspaceID" value="@ViewBag.WorkspaceID" />
+    <label>Email</label>
+    <input class="form-control" type="text" name="Email" placeholder="ExampleEmail" required />
+    <button class="btn btn-primary mt-4" type="submit">Add member</button>
+</form>

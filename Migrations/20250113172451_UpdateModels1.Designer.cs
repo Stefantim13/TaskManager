@@ -12,8 +12,8 @@ using TaskManager.Data;
 namespace TaskManager.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241217124004_FixedMigration")]
-    partial class FixedMigration
+    [Migration("20250113172451_UpdateModels1")]
+    partial class UpdateModels1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -223,6 +223,54 @@ namespace TaskManager.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("TaskManager.Models.AssignedTo", b =>
+                {
+                    b.Property<string>("userID")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("taskID")
+                        .HasColumnType("int");
+
+                    b.HasKey("userID", "taskID");
+
+                    b.HasIndex("taskID");
+
+                    b.ToTable("AssignedTos");
+                });
+
+            modelBuilder.Entity("TaskManager.Models.Comment", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<int>("TaskID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("TaskID");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Comments");
+                });
+
             modelBuilder.Entity("TaskManager.Models.Statuses", b =>
                 {
                     b.Property<int>("ID")
@@ -308,9 +356,7 @@ namespace TaskManager.Migrations
 
                     b.HasIndex("WorkspaceID");
 
-                    b.HasIndex("WorkspaceRoleID")
-                        .IsUnique()
-                        .HasFilter("[WorkspaceRoleID] IS NOT NULL");
+                    b.HasIndex("WorkspaceRoleID");
 
                     b.ToTable("Workings");
                 });
@@ -411,6 +457,43 @@ namespace TaskManager.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("TaskManager.Models.AssignedTo", b =>
+                {
+                    b.HasOne("TaskManager.Models.Tasks", "Tasks")
+                        .WithMany("AssignedUsers")
+                        .HasForeignKey("taskID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TaskManager.Models.ApplicationUser", "User")
+                        .WithMany("AssignedTasks")
+                        .HasForeignKey("userID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Tasks");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("TaskManager.Models.Comment", b =>
+                {
+                    b.HasOne("TaskManager.Models.Tasks", "Task")
+                        .WithMany("Comments")
+                        .HasForeignKey("TaskID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TaskManager.Models.ApplicationUser", "User")
+                        .WithMany("Comments")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Task");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("TaskManager.Models.Tasks", b =>
                 {
                     b.HasOne("TaskManager.Models.ApplicationUser", null)
@@ -445,8 +528,8 @@ namespace TaskManager.Migrations
                         .HasForeignKey("WorkspaceID");
 
                     b.HasOne("TaskManager.Models.WorkspaceRoles", "WorkspaceRole")
-                        .WithOne("Working")
-                        .HasForeignKey("TaskManager.Models.Working", "WorkspaceRoleID");
+                        .WithMany("Workings")
+                        .HasForeignKey("WorkspaceRoleID");
 
                     b.Navigation("User");
 
@@ -457,6 +540,10 @@ namespace TaskManager.Migrations
 
             modelBuilder.Entity("TaskManager.Models.ApplicationUser", b =>
                 {
+                    b.Navigation("AssignedTasks");
+
+                    b.Navigation("Comments");
+
                     b.Navigation("Tasks");
 
                     b.Navigation("Workings");
@@ -467,9 +554,16 @@ namespace TaskManager.Migrations
                     b.Navigation("Tasks");
                 });
 
+            modelBuilder.Entity("TaskManager.Models.Tasks", b =>
+                {
+                    b.Navigation("AssignedUsers");
+
+                    b.Navigation("Comments");
+                });
+
             modelBuilder.Entity("TaskManager.Models.WorkspaceRoles", b =>
                 {
-                    b.Navigation("Working");
+                    b.Navigation("Workings");
                 });
 
             modelBuilder.Entity("TaskManager.Models.Workspaces", b =>

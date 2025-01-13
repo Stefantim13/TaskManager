@@ -11,7 +11,6 @@ namespace TaskManager.Models
 
         public int ID { get; set; }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int? StatusID { get; set; }
 
         [Required(ErrorMessage = "Titlul este obligatoriu")]
@@ -21,11 +20,15 @@ namespace TaskManager.Models
 
         public string? Description { get; set; }
 
+        public DateTime? DataStart { get; set; } = DateTime.Now;
         public DateTime? DueDate { get; set; }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int? WorkspaceID { get; set; }
 
         public virtual Workspaces? Workspace { get; set; }
+
+        public virtual ICollection<Comment>? Comments { get; set; }
+
+        public virtual ICollection<AssignedTo>? AssignedUsers { get; set; } = new List<AssignedTo>();
     }
 }

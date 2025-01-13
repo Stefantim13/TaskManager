@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TaskManager.Migrations
 {
     /// <inheritdoc />
-    public partial class FixedMigration : Migration
+    public partial class UpdateModels : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -267,6 +267,58 @@ namespace TaskManager.Migrations
                         principalColumn: "ID");
                 });
 
+            migrationBuilder.CreateTable(
+                name: "AssignedTos",
+                columns: table => new
+                {
+                    userID = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    taskID = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AssignedTos", x => new { x.userID, x.taskID });
+                    table.ForeignKey(
+                        name: "FK_AssignedTos_AspNetUsers_userID",
+                        column: x => x.userID,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AssignedTos_Tasks_taskID",
+                        column: x => x.taskID,
+                        principalTable: "Tasks",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Comments",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TaskID = table.Column<int>(type: "int", nullable: false),
+                    Content = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Comments", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Comments_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Comments_Tasks_TaskID",
+                        column: x => x.TaskID,
+                        principalTable: "Tasks",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "WorkspaceRoles",
                 columns: new[] { "Id", "Name" },
@@ -316,6 +368,21 @@ namespace TaskManager.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_AssignedTos_taskID",
+                table: "AssignedTos",
+                column: "taskID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Comments_TaskID",
+                table: "Comments",
+                column: "TaskID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Comments_UserId",
+                table: "Comments",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Tasks_ApplicationUserId",
                 table: "Tasks",
                 column: "ApplicationUserId");
@@ -348,9 +415,7 @@ namespace TaskManager.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Workings_WorkspaceRoleID",
                 table: "Workings",
-                column: "WorkspaceRoleID",
-                unique: true,
-                filter: "[WorkspaceRoleID] IS NOT NULL");
+                column: "WorkspaceRoleID");
         }
 
         /// <inheritdoc />
@@ -372,7 +437,10 @@ namespace TaskManager.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Tasks");
+                name: "AssignedTos");
+
+            migrationBuilder.DropTable(
+                name: "Comments");
 
             migrationBuilder.DropTable(
                 name: "Workings");
@@ -381,13 +449,16 @@ namespace TaskManager.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Status");
+                name: "Tasks");
+
+            migrationBuilder.DropTable(
+                name: "WorkspaceRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "WorkspaceRoles");
+                name: "Status");
 
             migrationBuilder.DropTable(
                 name: "Workspaces");

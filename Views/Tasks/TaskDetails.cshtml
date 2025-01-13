@@ -1,0 +1,153 @@
+﻿@model TaskManager.Models.Tasks
+
+@{
+    ViewData["Title"] = "Task Details";
+}
+
+<h2>@Model.Title</h2>
+<p><strong>Description:</strong> @Model.Description</p>
+<p><strong>Start Date:</strong> @Model.DataStart?.ToString("dd MMM yyyy")</p>
+<p><strong>Due Date:</strong> @Model.DueDate?.ToString("dd MMM yyyy")</p>
+
+<hr />
+
+<img src="https://www.publicdomainpictures.net/pictures/240000/nahled/hands-holding-task-word.jpg" alt="Hands holding the word 'task'" />
+
+
+<h3>Current Status: @Model.Status?.Name</h3>
+<form asp-action="UpdateStatus" asp-controller="Tasks" method="post" style="margin-top: 15px;">
+    <input type="hidden" name="TaskID" value="@Model.ID" />
+    <div class="form-group">
+        <label for="status">Change Status:</label>
+        <select id="status" name="StatusID" class="form-control">
+            @foreach (var status in ViewBag.Statuses)
+            {
+                if(Model.StatusID == status.ID)
+                {
+                    <option value="@status.ID" selected>@status.Name</option>
+                }
+                else
+                {
+                    <option value="@status.ID">@status.Name</option>
+                }
+            }
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary mt-2">Update Status</button>
+</form>
+<hr />
+
+<h3>Assigned Members</h3>
+<div id="assigned-members-section">
+    @if (Model.AssignedUsers != null && Model.AssignedUsers.Any())
+    {
+        <ul>
+            @foreach (var assigned in Model.AssignedUsers)
+            {
+                <li>
+                    @assigned.User?.UserName (@assigned.User?.Email)
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p>No members are assigned to this task yet.</p>
+    }
+</div>
+
+<hr />
+
+<h4>Assign a User to Task</h4>
+<form asp-action="AssignTask" asp-controller="Tasks" method="post">
+    <input type="hidden" name="TaskID" value="@Model.ID" />
+    <div class="form-group">
+        <label for="email">User Email:</label>
+        <input type="email" name="email" id="email" class="form-control" placeholder="Enter user email" required />
+    </div>
+    <button type="submit" class="btn btn-primary mt-3">Assign User</button>
+</form>
+
+<hr />
+
+
+
+<h3>Comments</h3>
+<div id="comments-section">
+    @if (Model.Comments != null && Model.Comments.Any())
+    {
+        foreach (var comment in Model.Comments)
+        {
+            <div class="comment">
+                <p><strong>@comment.User?.UserName:</strong> @comment.Content</p>
+                <p class="text-muted">@comment.CreatedAt.ToString("dd MMM yyyy HH:mm")</p>
+                <form asp-action="DeleteComment" asp-controller="Tasks" method="post" style="display: inline;">
+                    <input type="hidden" name="commentID" value="@comment.ID" />
+                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                </form>
+
+                <button class="btn btn-secondary btn-sm" onclick="toggleEditForm(@comment.ID)">Edit</button>
+
+                <form id="edit-form-@comment.ID" asp-action="UpdateComment" asp-controller="Tasks" method="post" style="display:none; margin-top:10px;">
+                    <input type="hidden" name="commentID" value="@comment.ID" />
+                    <textarea class="form-control" name="newDescription" required>@comment.Content</textarea>
+                    <button type="submit" class="btn btn-primary btn-sm mt-2">Save</button>
+                </form>
+            </div>
+        }
+    }
+    else
+    {
+        <p>No comments yet. Be the first to comment!</p>
+    }
+</div>
+
+<hr />
+
+<h4>Add a Comment</h4>
+<form asp-action="AddComment" asp-controller="Tasks" method="post">
+    <input type="hidden" name="taskId" value="@Model.ID" />
+    <div class="form-group">
+        <label for="content">Comment:</label>
+        <textarea name="content" id="content" class="form-control" required></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger mt-3">@TempData["Error"]</div>
+}
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success mt-3">@TempData["Success"]</div>
+}
+
+<hr />
+
+<a href="@Url.Action("ShowWorkspace", "Workspace", new { id = Model.WorkspaceID })" class="btn btn-secondary">Back to Task List</a>
+
+<style>
+    .comment {
+        border-bottom: 1px solid #ddd;
+        margin-bottom: 10px;
+        padding-bottom: 10px;
+    }
+
+    .text-muted {
+        font-size: 0.9em;
+        color: #666;
+    }
+
+    .btn-danger {
+        margin-left: 10px;
+    }
+</style>
+
+
+<script>
+    function toggleEditForm(commentId) {
+        var form = document.getElementById(`edit-form-${commentId}`);
+        form.style.display = form.style.display === "none" ? "block" : "none";
+    }
+</script>

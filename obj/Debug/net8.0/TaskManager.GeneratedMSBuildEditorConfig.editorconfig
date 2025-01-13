@@ -178,12 +178,24 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFza3NcTXlUYXNrcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/Bogdan/source/repos/TaskManager/TaskManager/Views/Tasks/TaskDetails.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFza3NcVGFza0RldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Bogdan/source/repos/TaskManager/TaskManager/Views/Workspace/AddMember.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcV29ya3NwYWNlXEFkZE1lbWJlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/Bogdan/source/repos/TaskManager/TaskManager/Views/Workspace/CreateWorkspace.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcV29ya3NwYWNlXENyZWF0ZVdvcmtzcGFjZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Bogdan/source/repos/TaskManager/TaskManager/Views/Workspace/MyWorkspaces.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcV29ya3NwYWNlXE15V29ya3NwYWNlcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Bogdan/source/repos/TaskManager/TaskManager/Views/Workspace/ShowWorkspace.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcV29ya3NwYWNlXFNob3dXb3Jrc3BhY2UuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Bogdan/source/repos/TaskManager/TaskManager/Views/Workspace/SuccesPage.cshtml]

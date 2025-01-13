@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TaskManager.Models
 {
@@ -15,6 +16,7 @@ namespace TaskManager.Models
         public virtual Workspaces? Workspace { get; set; }
 
         public int? WorkspaceRoleID { get; set; }
+        [ForeignKey("WorkspaceRoleID")]
         public virtual WorkspaceRoles? WorkspaceRole { get; set; }
     }
 }

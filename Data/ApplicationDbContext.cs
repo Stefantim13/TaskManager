@@ -18,8 +18,8 @@ namespace TaskManager.Data
         public DbSet<Statuses> Status { get; set; }
         public DbSet<Working> Workings { get; set; }
         public DbSet<WorkspaceRoles> WorkspaceRoles { get; set; }
-
-
+        public DbSet<Comment> Comments { get; set; }
+        public DbSet<AssignedTo> AssignedTos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -50,8 +50,53 @@ namespace TaskManager.Data
 
             builder.Entity<Working>()
                 .HasOne(w => w.WorkspaceRole)
-                .WithOne(r => r.Working)
-                .HasForeignKey <Working> (w => w.WorkspaceRoleID);
+                .WithMany(r => r.Workings)
+                .HasForeignKey(w => w.WorkspaceRoleID);
+
+            builder.Entity<AssignedTo>()
+                .HasKey(at => new { at.userID, at.taskID });
+
+            builder.Entity<AssignedTo>()
+                .HasOne(at => at.User)
+                .WithMany(u => u.AssignedTasks)
+                .HasForeignKey(at => at.userID);
+
+            builder.Entity<AssignedTo>()
+                .HasOne(at => at.Tasks)
+                .WithMany(t => t.AssignedUsers)
+                .HasForeignKey(at => at.taskID);
+
+            builder.Entity<Comment>()
+                .HasOne(c => c.Task)
+                .WithMany(t => t.Comments)
+                .HasForeignKey(c => c.TaskID);
+
+            builder.Entity<Comment>()
+                .HasOne(c => c.User)
+                .WithMany(t => t.Comments)
+                .HasForeignKey(c => c.UserId);
+
+            builder.Entity<Comment>(entity =>
+            {
+                entity.HasKey(c => c.ID);
+
+                entity.HasOne(c => c.Task)
+                      .WithMany(t => t.Comments)
+                      .HasForeignKey(c => c.TaskID)
+                      .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(c => c.User)
+                      .WithMany(u => u.Comments)
+                      .HasForeignKey(c => c.UserId)
+                      .OnDelete(DeleteBehavior.Restrict);
+
+                entity.Property(c => c.Content)
+                      .IsRequired()
+                      .HasMaxLength(500);
+
+                entity.Property(c => c.CreatedAt)
+                      .HasDefaultValueSql("GETDATE()");
+            });
 
 
 

@@ -1,8 +1,34 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Task Manager";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container mt-5">
+    <div class="text-center py-5">
+        <h1 class="display-4">Welcome to Task Manager</h1>
+        <p class="lead">Easily manage your tasks and stay organized.</p>
+        <p>
+            Start by creating an account or logging in to access your tasks.
+        </p>
+        <a class="btn btn-primary btn-lg" href="/Account/Register" role="button">Register</a>
+        <a class="btn btn-secondary btn-lg" href="/Account/Login" role="button">Login</a>
+    </div>
+
+    <div class="row text-center mt-5">
+        <div class="col-md-4">
+            <h2>Create Tasks</h2>
+            <p>Quickly create tasks and organize them by priority or deadlines.</p>
+        </div>
+        <div class="col-md-4">
+            <h2>Track Progress</h2>
+            <p>Stay on top of your work by tracking task progress in real-time.</p>
+        </div>
+        <div class="col-md-4">
+            <h2>Stay Organized</h2>
+            <p>Use categories and filters to organize tasks your way.</p>
+        </div>
+    </div>
+
+    <footer class="text-center mt-5">
+        <p>&copy; 2025 TaskManager - <a href="/Home/Privacy">Privacy</a></p>
+    </footer>
 </div>

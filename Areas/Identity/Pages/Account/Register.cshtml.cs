@@ -113,7 +113,7 @@ namespace TaskManager.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                /* var admin = await _userManager.FindByEmailAsync("admin@admin.com");
+                var admin = await _userManager.FindByEmailAsync("admin@admin.com");
                 if(admin != null)
                 {
                     await _userManager.DeleteAsync(admin);
@@ -129,7 +129,7 @@ namespace TaskManager.Areas.Identity.Pages.Account
                     {
                         await _userManager.AddToRoleAsync(_user, "Administrator");
                     }
-                }*/
+                }
                 var user = CreateUser();
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);

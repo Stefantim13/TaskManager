@@ -7,6 +7,6 @@ namespace TaskManager.Models
         [Key]
         public int Id { get; set; }
         public string? Name { get; set; }
-        public virtual Working? Working { get; set; }
+        public virtual ICollection<Working?> Workings { get; set; } = new List<Working?>();
     }
 }
